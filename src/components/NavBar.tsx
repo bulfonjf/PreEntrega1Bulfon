@@ -1,11 +1,13 @@
 import CartWidget from "./CartWidget";
+import Categories from "./Categories";
 
 export default function NavBar() {
   return (
     <div className="navbar bg-base-100">
-      <div className="flex-1">
+      <div className="flex-none">
         <a className="btn btn-ghost text-xl">Ferreteria del valle</a>
       </div>
+      <Categories />
       <div className="flex-none">
         <CartWidget count={7} subtotal={100} />
         <div className="dropdown dropdown-end">

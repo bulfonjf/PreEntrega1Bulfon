@@ -5,12 +5,8 @@ import ItemListContainer from "./components/ItemListContainer";
 function App() {
   return (
     <>
-      <div className="container mx-auto">
-        <NavBar />
-      </div>
-      <div className="container mx-auto">
-        <ItemListContainer />
-      </div>
+      <NavBar />
+      <ItemListContainer greeting="Bienvenidos a la tienda"/>
     </>
   );
 }
