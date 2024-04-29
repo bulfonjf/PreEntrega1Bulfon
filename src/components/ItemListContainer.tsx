@@ -14,8 +14,8 @@ export default function ItemListContainer({greeting}: Props) {
           <thead className="text-2xl">
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Price</th>
+              <th>Nombre</th>
+              <th>Precio</th>
               <th></th>
             </tr>
           </thead>
