@@ -1,13 +1,21 @@
 import "./App.css";
-import NavBar from "./components/NavBar";
-import ItemListContainer from "./components/ItemListContainer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ItemDetailContainer from "./components/ItemDetailContainer";
+import Home from "./components/Home";
+import CartView from "./components/CartView";
+
+
 
 function App() {
   return (
-    <>
-      <NavBar />
-      <ItemListContainer greeting="Bienvenidos a la tienda"/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/categories/:categoryId" element={<Home />} />
+        <Route path="/cart" element={<CartView />} />
+        <Route path="/item/:id" element={<ItemDetailContainer />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

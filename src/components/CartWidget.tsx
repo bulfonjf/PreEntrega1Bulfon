@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface Props {
   count: number;
   subtotal: number;
@@ -35,7 +37,9 @@ export default function CartWidget({ count, subtotal }: Props) {
           <span className="font-bold text-lg">{count} Items</span>
           <span className="text-info">Subtotal: {subtotal}</span>
           <div className="card-actions">
-            <button className="btn btn-primary btn-block">View cart</button>
+            <Link to="/cart" className="btn btn-primary btn-block">
+              View cart
+            </Link>
           </div>
         </div>
       </div>
