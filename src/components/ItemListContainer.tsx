@@ -28,7 +28,7 @@ export default function ItemListContainer({greeting}: Props) {
   }, []);
 
   return (
-    <div className="container mx-auto py-8">
+    <>
       <h1 className="text-3xl">{greeting}</h1>
       <div className="overflow-x-auto">
         <table className="table table-zebra text-xl">
@@ -41,6 +41,6 @@ export default function ItemListContainer({greeting}: Props) {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   );
 }

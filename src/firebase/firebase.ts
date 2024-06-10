@@ -39,3 +39,23 @@ export async function getItems() {
     });
     return items;
 }
+
+export async function getItemById(id: string) {
+    const querySnapshot = await getDocs(collection(db, "items"));
+    let item: Item = {} as Item;
+    querySnapshot.docs.find((doc) => {
+        if (doc.id === id) {
+            item = {
+                id: doc.id,
+                image: doc.data().image,
+                price: doc.data().price,
+                description: doc.data().description,
+                category: doc.data().category,
+                stock: doc.data().stock
+            };
+            return true;
+        }
+        return false;
+    });
+    return item;
+}
