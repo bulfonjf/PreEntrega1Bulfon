@@ -15,7 +15,7 @@ export default function ItemCard({ item }: Props) {
                     <p>{item.description}</p>
                     <p>Stock: {item.stock}</p>
                     <div className="card-actions justify-end">
-                    <AddToCart name={item.description} price={item.price} />
+                    <AddToCart item={item} />
                     </div>
                 </div>
         </div>
