@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getItems } from '../firebase/firebase';
 import { Item } from '../model/item';
 import ItemCard from './ItemCard';
@@ -12,11 +12,12 @@ interface Props {
 export default function ItemListContainer({greeting}: Props) {
 
   const [items, setItems] = useState([] as Item[]);
+  const {category} = useParams();
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const items = await getItems();
+        const items = await getItems(category || 'all');
 
         setItems(items);
         
@@ -26,7 +27,7 @@ export default function ItemListContainer({greeting}: Props) {
     };
 
     fetchItems();
-  }, []);
+  }, [category]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getDocs, collection } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, query, where} from "firebase/firestore";
 import { Item } from "../model/item";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,9 +23,41 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-export async function getItems() {
-    const querySnapshot = await getDocs(collection(db, "items"));
+export async function getItems(category: string) {
+    if (category !== 'all') {
+        return getItemsByCategory(category);
+    } else {
+        return getAllItems();
+    }
+    
+
+async function getItemsByCategory(category: string) {
+    const q = query(collection(db, "items"), where("category", "==", category));
+    const querySnapshot = await getDocs(q);
+
     const items: Item[] = [];
+
+    querySnapshot.docs.forEach((doc) => {
+        if (doc.data().category === category) {
+            const item: Item = {
+                id: doc.id,
+                image: doc.data().image,
+                price: doc.data().price,
+                description: doc.data().description,
+                category: doc.data().category,
+                stock: doc.data().stock
+            };
+            items.push(item);
+        }
+    });
+    
+    return items;
+}
+
+async function getAllItems() {
+    const items: Item[] = [];
+
+    const querySnapshot = await getDocs(collection(db, "items"));
     querySnapshot.docs.forEach((doc) => {
         const item: Item = {
             id: doc.id,
@@ -37,25 +69,21 @@ export async function getItems() {
         };
         items.push(item);
     });
+
     return items;
+}
 }
 
 export async function getItemById(id: string) {
-    const querySnapshot = await getDocs(collection(db, "items"));
-    let item: Item = {} as Item;
-    querySnapshot.docs.find((doc) => {
-        if (doc.id === id) {
-            item = {
-                id: doc.id,
-                image: doc.data().image,
-                price: doc.data().price,
-                description: doc.data().description,
-                category: doc.data().category,
-                stock: doc.data().stock
-            };
-            return true;
-        }
-        return false;
-    });
+    const itemData = await getDoc(doc(db, "items", id));
+    const item: Item = {
+        id: itemData.id,
+        image: itemData.data()?.image,
+        price: itemData.data()?.price,
+        description: itemData.data()?.description,
+        category: itemData.data()?.category,
+        stock: itemData.data()?.stock
+    };
     return item;
+    
 }
