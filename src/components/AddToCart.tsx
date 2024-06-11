@@ -1,41 +1,37 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {CartContext} from "../contexts/CartContext";
 import { Item } from "../model/item";
+import { CartItem } from "../model/cartItem";
 
 interface Props {
   item: Item
 }
 
 
-
 export default function AddToCart({ item }: Props) {
 
   const cartContext = useContext(CartContext);
+  const [cartItems, setCartItems] = useState(cartContext)
 
-  function handleClick(item: Item) {
+  function addItemToCart(item: Item) {
 
     if(item.stock <= 0) {
-      console.log("Out of stock");
+      console.log("Item not added to cart, out of stock");
       return;
     }
     
-    let cartItem = cartContext.find((cartItem) => cartItem.id === item.id);
-  
-    if (cartItem && cartItem.quantity <= item.stock) {
-      cartItem.quantity++;
-      cartItem.totalPrice = cartItem.quantity * item.price;
-      console.log("Increase item to cart");
-      return;
-    } else if (cartItem && cartItem.quantity > item.stock) {
-      console.log("Out of stock");
+    const isItemInCart = cartItems.find((cartItem) => cartItem.id === item.id);
+
+    if (isItemInCart) {
+      setCartItems(
+          cartItems.map((cartItem) =>
+          cartItem.id === item.id
+              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              : cartItem
+          )
+      );
     } else {
-      cartItem = {
-        id: item.id,
-        quantity: 1,
-        totalPrice: item.price
-      };
-      console.log("Add item to cart");
-      cartContext.push(cartItem);
+      setCartItems([...cartItems, {id: item.id, item: item, quantity: 1, totalPrice: item.price} as CartItem]);
     }
   }
 
@@ -43,7 +39,7 @@ export default function AddToCart({ item }: Props) {
     <>
       <button
         className="btn btn-ghost btn-xl text-xl"
-        onClick={() => handleClick(item)}
+        onClick={() => addItemToCart(item)}
       >
         Add to Cart
       </button>

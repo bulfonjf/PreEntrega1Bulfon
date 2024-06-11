@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getItems } from '../firebase/firebase';
 import { Item } from '../model/item';
 import ItemCard from './ItemCard';
@@ -43,9 +43,7 @@ export default function ItemListContainer({greeting}: Props) {
               ) : (
                 <td>
                   {items.map((item) => (
-                    <Link to={`/item/${item.id}`}>
-                      <ItemCard key={item.id} item={item} />
-                    </Link>
+                    <ItemCard key={item.id} item={item} />
                   ))}
                 </td>
               )}
