@@ -1,4 +1,5 @@
 import { Item } from '../model/item';
+import ItemCard from './ItemCard';
 
 interface Props {
     item: Item;
@@ -7,8 +8,7 @@ interface Props {
 export default function ItemDetail({ item } : Props) {
     return (
         <div>
-            <p>{item.description}</p>
-            <p>Price: ${item.price}</p>
+            <ItemCard key={item.id} item={item} />
         </div>
     );
 };

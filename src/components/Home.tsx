@@ -3,7 +3,7 @@ import ItemListContainer from "./ItemListContainer";
 export default function Home() {
     return(
         <>
-        <ItemListContainer greeting="Bienvenidos a la tienda" />
+        <ItemListContainer greeting="Welcome to the store" />
         </>
     );
 }

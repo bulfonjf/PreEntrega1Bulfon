@@ -9,12 +9,12 @@ export default function ItemDetailContainer() {
 
     const [item, setItem] = useState({} as Item);
 
-    const {itemId} = useParams();
+    const {id: itemId} = useParams();
 
     useEffect(() => {
         const fetchItem = async () => {
           try {
-            
+            console.log(`itemId: `, itemId)
             const item = await getItemById(itemId || '');
     
             setItem(item);

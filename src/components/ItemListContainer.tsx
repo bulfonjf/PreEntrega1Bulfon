@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getItems } from '../firebase/firebase';
 import { Item } from '../model/item';
-import ItemList from './ItemList';
+import ItemCard from './ItemCard';
 
 interface Props {
   greeting: string;
@@ -35,7 +36,9 @@ export default function ItemListContainer({greeting}: Props) {
           <tbody>
             <tr>
             {items.map((item) => (
-              <ItemList key={item.id} item={item} />
+              <Link to={`/item/${item.id}`}>
+                <ItemCard key={item.id} item={item} />
+              </Link>
             ))}
             </tr>
           </tbody>

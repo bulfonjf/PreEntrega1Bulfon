@@ -1,28 +1,14 @@
 import CartWidget from "./CartWidget";
-import Categories from "./Categories";
 
 export default function NavBar() {
   return (
-    <div className="navbar bg-base-100">
+    <nav className="bg-slate-400 p-4 flex items-center justify-between">
       <div className="flex-none">
-        <a className="btn btn-ghost text-xl">Ferreteria del valle</a>
+        <a className="btn btn-ghost text-xl">Wood market</a>
       </div>
-      <Categories />
       <div className="flex-none">
         <CartWidget count={7} subtotal={100} />
         <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
-            </div>
-          </div>
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
@@ -42,6 +28,6 @@ export default function NavBar() {
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
