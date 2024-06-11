@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Item } from "../model/item";
-import AddToCart from "./AddToCart";
 
 interface Props {
     item: Item;
@@ -17,7 +16,6 @@ export default function ItemCard({ item }: Props) {
                         <p>Stock: {item.stock}</p>
                     </Link>
                     <div className="card-actions justify-end">
-                    <AddToCart item={item} />
                     </div>
                 </div>
         </div>

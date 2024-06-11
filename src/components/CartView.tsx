@@ -1,49 +1,127 @@
-import { useContext, useState } from 'react';
-import { CartContext } from '../contexts/CartContext';
-import { CartItem } from '../model/cartItem';
-import { useEffect } from 'react';
-import CartCard from './CartCard';
-import Alert from './Alert';
+import PropTypes from 'prop-types'
+import { useContext } from 'react'
+import { CartContext } from '../contexts/CartContext.jsx'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { Item } from '../model/item.js'
+import { CartItem } from '../model/cartItem.js'
 
-export default function CartView() {
-    const cartContext = useContext<CartItem[]>(CartContext);
-    
-    useEffect(() => {
-        console.log('cartItems: ', cartContext);
-    }, [cartContext]);
+interface CartProps {
+    showModal: boolean
+    toggle: () => void
+}
 
-    const [_, setCartItems] = useState(cartContext)
-    
-    function clearCart() {
-        setCartItems([]);
+export default function Cart ({showModal, toggle} : CartProps) {
+
+  const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } = useContext(CartContext)
+
+  const notifyRemovedFromCart = (item : Item) => toast.error(`${item.title} removed from cart!`, {
+    position: 'top-center',
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'colored',
+    style: {
+      backgroundColor: '#000',
+      color: '#fff'
     }
+  })
 
-    return (
-        <div>
-            <h2>Cart View</h2>
-            {
-                cartContext.length === 0 ? (
-                    <Alert message='Your cart is empty' />
-                 ) : (
-                    <>
-                        <ul>
-                            {cartContext.map((cartItem) => (
-                                <li key={cartItem.id}>
-                                    <CartCard key={cartItem.id} cartItem={cartItem} />
-                                </li>
-                            ))}
-                        </ul>
-                        <div>
-                        <button
-                            className="btn btn-ghost btn-xl text-xl"
-                            onClick={() => clearCart()}
-                        >
-                            Clear cart
-                        </button>
-                        </div>
-                    </>
-                )
-            }          
+  const notifyCartCleared = () => toast.error(`Cart cleared!`, {
+    position: 'top-center',
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'colored',
+    style: {
+      backgroundColor: '#000',
+      color: '#fff'
+    }
+  })
+
+  const handleRemoveFromCart = (item : Item) => {
+    removeFromCart(item)
+    notifyRemovedFromCart(item)
+  }
+
+  return (
+    showModal && (
+      <div className="flex-col flex items-center fixed inset-0 left-1/4 bg-white dark:bg-black gap-8  p-10  text-black dark:text-white font-normal uppercase text-sm">
+        <ToastContainer />
+        <h1 className="text-2xl font-bold">Cart</h1>
+        <div className="absolute right-16 top-10">
+          <button
+            className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+            onClick={toggle}
+          >
+            Close
+          </button>
         </div>
-    );
-};
+        <div className="flex flex-col gap-4">
+          {cartItems.map((cartItem : CartItem) => (
+            <div className="flex justify-between items-center" key={cartItem.id}>
+              <div className="flex gap-4">
+                <img src={cartItem.item.image} alt={cartItem.item.title} className="rounded-md w-24 h-24" />
+                <div className="flex gap-8 justify-center">
+                  <h1 className="text-lg font-bold">{cartItem.item.title}</h1>
+                  <p className="text-gray-600">${cartItem.item.price}</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <button
+                  className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  onClick={() => {
+                    addToCart(cartItem.item)
+                  }}
+                >
+                  +
+                </button>
+                <p>{cartItem.quantity}</p>
+                <button
+                  className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  onClick={() => {
+                    const cartItem : any = cartItems.find((ci : CartItem) => ci.id === cartItem.id);
+                    if (cartItem.quantity === 1) {
+                      handleRemoveFromCart(cartItem);
+                    } else {
+                      removeFromCart(cartItem);
+                    }
+                  }}
+                >
+                  -
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        {
+          cartItems.length > 0 ? (
+            <div className="flex flex-col justify-between items-center">
+          <h1 className="text-lg font-bold">Total: ${getCartTotal()}</h1>
+          <button
+            className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+            onClick={() => {
+              clearCart()
+              notifyCartCleared()
+            }}
+          >
+            Clear cart
+          </button>
+        </div>
+          ) : (
+            <h1 className="text-lg font-bold">Your cart is empty</h1>
+          )
+        }
+      </div>
+    )
+  )
+}
+
+Cart.propTypes = {
+  showModal: PropTypes.bool,
+  toggle: PropTypes.func
+}

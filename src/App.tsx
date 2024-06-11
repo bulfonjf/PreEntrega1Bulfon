@@ -25,7 +25,7 @@ function App() {
           <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/categories/:category" element={<Home />} />
-              <Route path="/cart" element={<CartView />} />
+              <Route path="/cart" element={<CartView showModal={false} toggle={() => {}} />} />
               <Route path="/item/:id" element={<ItemDetailContainer />} />
             </Routes>
           </CartContext.Provider>
