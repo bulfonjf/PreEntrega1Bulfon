@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { getItems } from '../firebase/firebase';
 import { Item } from '../model/item';
 import ItemCard from './ItemCard';
+import Alert from './Alert';
 
 interface Props {
   greeting: string;
@@ -36,11 +37,18 @@ export default function ItemListContainer({greeting}: Props) {
         <table className="table table-zebra text-xl">
           <tbody>
             <tr>
-            {items.map((item) => (
-              <Link to={`/item/${item.id}`}>
-                <ItemCard key={item.id} item={item} />
-              </Link>
-            ))}
+              {
+              items.length === 0 ? (
+                <td><Alert message='Items not found'/></td>
+              ) : (
+                <td>
+                  {items.map((item) => (
+                    <Link to={`/item/${item.id}`}>
+                      <ItemCard key={item.id} item={item} />
+                    </Link>
+                  ))}
+                </td>
+              )}
             </tr>
           </tbody>
         </table>

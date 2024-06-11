@@ -1,5 +1,5 @@
 import ItemDetail from './ItemDetail';
-import ItemNotFound from './ItemNotFound';
+import Alert from './Alert';
 import { Item } from '../model/item';
 import { getItemById } from '../firebase/firebase';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ export default function ItemDetailContainer() {
             {itemId || item.id ? (
               <ItemDetail item={item} />
             ) : (
-              <ItemNotFound />
+              <Alert message='Item not found'/>
             )}
         </div>
     );
