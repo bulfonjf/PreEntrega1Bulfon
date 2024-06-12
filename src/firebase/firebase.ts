@@ -41,6 +41,7 @@ async function getItemsByCategory(category: string) {
         if (doc.data().category === category) {
             const item: Item = {
                 id: doc.id,
+                title: doc.data().title,
                 image: doc.data().image,
                 price: doc.data().price,
                 description: doc.data().description,
@@ -61,6 +62,7 @@ async function getAllItems() {
     querySnapshot.docs.forEach((doc) => {
         const item: Item = {
             id: doc.id,
+            title: doc.data().title,
             image: doc.data().image,
             price: doc.data().price,
             description: doc.data().description,
@@ -78,6 +80,7 @@ export async function getItemById(id: string) {
     const itemData = await getDoc(doc(db, "items", id));
     const item: Item = {
         id: itemData.id,
+        title: itemData.data()?.title,
         image: itemData.data()?.image,
         price: itemData.data()?.price,
         description: itemData.data()?.description,

@@ -7,7 +7,7 @@ export default function NavBar() {
         <a className="btn btn-ghost text-xl">Wood market</a>
       </div>
       <div className="flex-none">
-        <CartWidget count={7} subtotal={100} />
+        <CartWidget count={7} />
         <div className="dropdown dropdown-end">
           <ul
             tabIndex={0}

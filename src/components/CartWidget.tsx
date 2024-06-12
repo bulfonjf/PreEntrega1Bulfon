@@ -2,14 +2,13 @@ import { Link } from "react-router-dom";
 
 interface Props {
   count: number;
-  subtotal: number;
 }
 
-export default function CartWidget({ count, subtotal }: Props) {
+export default function CartWidget({ count }: Props) {
   return (
-    <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-        <div className="indicator">
+    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+      <div className="indicator">
+        <Link to="/cart">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-7 w-7"
@@ -27,22 +26,9 @@ export default function CartWidget({ count, subtotal }: Props) {
           <span className="badge badge-sm indicator-item badge-secondary">
             {count}
           </span>
-        </div>
-      </div>
-      <div
-        tabIndex={0}
-        className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
-      >
-        <div className="card-body">
-          <span className="font-bold text-lg">{count} Items</span>
-          <span className="text-info">Subtotal: {subtotal}</span>
-          <div className="card-actions">
-            <Link to="/cart" className="btn btn-primary btn-block">
-              View cart
-            </Link>
-          </div>
-        </div>
+        </Link>
       </div>
     </div>
+    
   );
 }

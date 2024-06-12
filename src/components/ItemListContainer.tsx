@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getItems } from '../firebase/firebase';
 import { Item } from '../model/item';
-import ItemCard from './ItemCard';
+import ItemList from './ItemList';
 import Alert from './Alert';
 
 interface Props {
@@ -38,14 +38,14 @@ export default function ItemListContainer({greeting}: Props) {
           <tbody>
             <tr>
               {
-              items.length === 0 ? (
-                <td><Alert message='Items not found'/></td>
-              ) : (
-                <td>
-                  {items.map((item) => (
-                    <ItemCard key={item.id} item={item} />
-                  ))}
-                </td>
+                items.length === 0 ? (
+                  <td><Alert message='Items not found'/></td>
+                ) : (
+                items.map((item) => (
+                  <td key={item.id}>
+                    <ItemList key={item.id} item={item} />
+                  </td>
+                ))
               )}
             </tr>
           </tbody>

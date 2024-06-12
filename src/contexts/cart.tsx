@@ -20,7 +20,7 @@ export const CartContext = createContext<CartContextProps>({
     getCartTotal: () => 0,
 });
 
-export const CartProvider = (children : React.ReactNode) => {
+export const CartProvider = ({children} : any) => {
     const localStorageCartItem =  localStorage.getItem('cartItems') || '[]'
     const [cartItems, setCartItems] = useState(localStorage.getItem('cartItems') ? JSON.parse(localStorageCartItem) : [])
 
@@ -91,5 +91,5 @@ export const CartProvider = (children : React.ReactNode) => {
 };
 
 CartProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
