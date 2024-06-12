@@ -13,7 +13,7 @@ interface CartContextProps {
 
 
 export const CartContext = createContext<CartContextProps>({
-    cartItems: [],
+    cartItems: [] as CartItem[],
     addToCart: () => {},
     removeFromCart: () => {},
     clearCart: () => {},
@@ -22,37 +22,47 @@ export const CartContext = createContext<CartContextProps>({
 
 export const CartProvider = ({children} : any) => {
     const localStorageCartItem =  localStorage.getItem('cartItems') || '[]'
-    const [cartItems, setCartItems] = useState(localStorage.getItem('cartItems') ? JSON.parse(localStorageCartItem) : [])
+    const [cartItems, setCartItems] = useState<CartItem[]>(localStorage.getItem('cartItems') ? JSON.parse(localStorageCartItem) : [])
 
     const addToCart = (item : Item) => {
+        if(!item || item.stock <= 1) {
+            return;
+        }
+
         const isItemInCart = cartItems.find((cartItem : CartItem) => cartItem.id === item.id);
 
         if (isItemInCart) {
-        setCartItems(
-            cartItems.map((cartItem : CartItem) =>
-            cartItem.id === item.id
-                ? { ...cartItem, quantity: cartItem.quantity + 1 }
-                : cartItem
-            )
-        );
+            if(isItemInCart.quantity >= item.stock) return;
+
+            setCartItems(
+                cartItems.map((cartItem : CartItem) =>
+                cartItem.id === item.id
+                    ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                    : cartItem
+                )
+            );
         } else {
-            setCartItems([...cartItems, { ...item, quantity: 1 }]);
+            setCartItems([...cartItems, { id: item.id, item:{ ...item }, quantity: 1 }] as CartItem[]);
         }
     };
 
     const removeFromCart = (item : Item) => {
+        if(!item) {
+            return;
+        }
+
         const isItemInCart = cartItems.find((cartItem : CartItem) => cartItem.id === item.id);
 
-        if (isItemInCart.quantity === 1) {
-        setCartItems(cartItems.filter((cartItem : CartItem) => cartItem.id !== item.id));
+        if (isItemInCart && isItemInCart.quantity === 1) {
+            setCartItems(cartItems.filter((cartItem : CartItem) => cartItem.id !== item.id));
         } else {
-        setCartItems(
-            cartItems.map((cartItem : CartItem) =>
-            cartItem.id === item.id
-                ? { ...cartItem, quantity: cartItem.quantity - 1 }
-                : cartItem
-            )
-        );
+            setCartItems(
+                cartItems.map((cartItem : CartItem) =>
+                cartItem.id === item.id
+                    ? { ...cartItem, quantity: cartItem.quantity - 1 }
+                    : cartItem
+                )
+            );
         }
     };
 
@@ -61,7 +71,7 @@ export const CartProvider = ({children} : any) => {
     };
 
     const getCartTotal = () => {
-        return cartItems.reduce((cartItem : CartItem, total : number) => total + cartItem.totalPrice, 0);
+        return cartItems.reduce((acc : number, cartItem : CartItem) => acc + cartItem.item.price * cartItem.quantity, 0);
     };
 
     useEffect(() => {

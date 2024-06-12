@@ -1,14 +1,18 @@
-import PropTypes from 'prop-types'
 import { useContext } from 'react'
 import { CartContext } from '../contexts/cart.js'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Item } from '../model/item.js'
 import { CartItem } from '../model/cartItem.js'
+import Alert from './Alert';
+import { Link } from 'react-router-dom';
 
 export default function Cart () {
 
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } = useContext(CartContext)
+
+  console.log('CartItems');
+  console.log(cartItems);
 
   const notifyRemovedFromCart = (item : Item) => toast.error(`${item.title} removed from cart!`, {
     position: 'top-center',
@@ -44,76 +48,73 @@ export default function Cart () {
   }
 
   return (
-    <div className="flex-col flex items-center fixed inset-0 left-1/4 bg-white dark:bg-black gap-8  p-10  text-black dark:text-white font-normal uppercase text-sm">
-      <ToastContainer />
-      <h1 className="text-2xl font-bold">Cart</h1>
-      <div className="absolute right-16 top-10">
-        <button
-          className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-        >
-          Close
-        </button>
-      </div>
-      <div className="flex flex-col gap-4">
-        {cartItems.map((cartItem : CartItem) => (
-          <div className="flex justify-between items-center" key={cartItem.id}>
-            <div className="flex gap-4">
-              <img src={cartItem.item.image} alt={cartItem.item.title} className="rounded-md w-24 h-24" />
-              <div className="flex gap-8 justify-center">
-                <h1 className="text-lg font-bold">{cartItem.item.title}</h1>
-                <p className="text-gray-600">${cartItem.item.price}</p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <button
-                className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                onClick={() => {
-                  addToCart(cartItem.item)
-                }}
-              >
-                +
-              </button>
-              <p>{cartItem.quantity}</p>
-              <button
-                className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                onClick={() => {
-                  const cartItem : any = cartItems.find((ci : CartItem) => ci.id === cartItem.id);
-                  if (cartItem.quantity === 1) {
-                    handleRemoveFromCart(cartItem);
-                  } else {
-                    removeFromCart(cartItem);
-                  }
-                }}
-              >
-                -
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-      {
-        cartItems.length > 0 ? (
-          <div className="flex flex-col justify-between items-center">
-        <h1 className="text-lg font-bold">Total: ${getCartTotal()}</h1>
-        <button
-          className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-          onClick={() => {
-            clearCart()
-            notifyCartCleared()
-          }}
-        >
-          Clear cart
-        </button>
-      </div>
-        ) : (
-          <h1 className="text-lg font-bold">Your cart is empty</h1>
-        )
-      }
+    <>
+    <ToastContainer />
+    <h1 className="text-2xl font-bold">Cart</h1>
+    <div className="overflow-x-auto">
+      <table className="table table-zebra text-xl">
+        <tbody>
+          <tr>
+            {
+              cartItems.length === 0 ? (
+                <td><Alert message='Cart is empty'/></td>
+              ) : (
+                cartItems.map((cartItem : CartItem) => (
+                <td key={cartItem.id}>
+                  <div className="card lg:card-side bg-base-100 shadow-xl">
+                    <figure><img src={cartItem.item.image} alt="item image"/></figure>
+                    <div className="card-body">
+                      <div>
+                        <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
+                          <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
+                          <p>{cartItem.item.description}</p>
+                        </Link>
+                      </div>
+                      <div className="card-actions justify-end">
+                        <button
+                        className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                        onClick={() => {
+                          addToCart(cartItem.item)
+                        }}
+                        >
+                          +
+                        </button>
+                        <p>{cartItem.quantity}</p>
+                        <button
+                          className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                          onClick={() => {
+                            const cartItemToRemove : CartItem | undefined = cartItems.find((ci : CartItem) => ci.id === cartItem.id);
+                            if (cartItemToRemove?.quantity === 1) {
+                              handleRemoveFromCart(cartItemToRemove.item);
+                            } else {
+                              removeFromCart(cartItemToRemove ? cartItemToRemove.item : {} as Item);
+                            }
+                          }}
+                        >
+                        -
+                      </button>
+                      </div>
+                    </div>
+                </div>
+                </td>
+              ))
+            )}
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <div className="flex flex-col justify-between items-center">
+      <h1 className="text-lg font-bold">Total: ${getCartTotal()}</h1>
+      <button
+        className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+        onClick={() => {
+          clearCart()
+          notifyCartCleared()
+        }}
+      >
+        Clear cart
+      </button>
+    </div>
+    </>
   )
-}
-
-Cart.propTypes = {
-  showModal: PropTypes.bool,
-  toggle: PropTypes.func
 }
