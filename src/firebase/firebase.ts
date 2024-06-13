@@ -38,8 +38,8 @@ export async function getItems(category: string) {
     } else {
         return getAllItems();
     }
+}
     
-
 async function getItemsByCategory(category: string) {
     const q = query(collection(db, "items"), where("category", "==", category));
     const querySnapshot = await getDocs(q);
@@ -83,7 +83,6 @@ async function getAllItems() {
 
     return items;
 }
-}
 
 export async function getItemById(id: string) {
     const itemData = await getDoc(doc(db, "items", id));
@@ -98,4 +97,12 @@ export async function getItemById(id: string) {
     };
     return item;
     
+}
+
+export async function getAllCategories() {
+    const querySnapshot = await getDocs(collection(db, "categories"));
+    
+    return querySnapshot.docs.map((doc) => {
+        return doc.data().title;
+    });
 }
