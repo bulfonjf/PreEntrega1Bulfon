@@ -28,7 +28,7 @@ export default function ItemList({ item }: Props) {
     const { addToCart } = useContext(CartContext)
     
     return (
-        <div className="card lg:card-side bg-base-100 shadow-xl p-1">
+        <div className="card lg:card-side bg-base-100 shadow-xl p-3" style={{display: 'grid', gridGap: '1rem', gridTemplateColumns: '1fr 5fr'}} >
             <figure><img src={item.image} alt="item image"/></figure>
             <div className="card-body">
                 <Link key={item.id} to={`/item/${item.id}`}>
