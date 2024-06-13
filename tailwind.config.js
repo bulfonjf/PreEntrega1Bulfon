@@ -1,16 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
+  plugins: [require("daisyui")],
+
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        primary: '#475569',
-        secondary: '#9ca3af',
-        neutral: '#e5e5e5',
-        base: '#e5e5e5',
+        "secondary-muted": "oklch(var(--secondary-muted) / <alpha-value>)",
       }
     },
   },
-  plugins: [require("daisyui")],
+
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["[data-theme=light]"],
+          "--secondary-muted": "338 83% 66%",
+        },
+      },
+    ],
+  },
 };
