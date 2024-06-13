@@ -2,12 +2,29 @@ import { Link } from 'react-router-dom';
 import { Item } from "../model/item";
 import { CartContext } from '../contexts/cart.js'
 import { useContext } from 'react'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface Props {
     item: Item;
 }
 
 export default function ItemList({ item }: Props) {
+    const notifyItemAddedToCart= () => toast.error(`Item added to cart`, {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'colored',
+        style: {
+          backgroundColor: '#000',
+          color: '#fff'
+        }
+    })
+
+
     const { addToCart } = useContext(CartContext)
     return (
         <div className="card lg:card-side bg-base-100 shadow-xl p-1">
@@ -22,7 +39,9 @@ export default function ItemList({ item }: Props) {
                     <button
                     className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
                     onClick={() => {
-                    addToCart(item)}}
+                    addToCart(item)
+                    notifyItemAddedToCart()
+                    }}
                     >
                     Add to Cart
                     </button>

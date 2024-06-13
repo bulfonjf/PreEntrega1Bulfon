@@ -1,35 +1,70 @@
 import { useContext, useState } from 'react'
-import { CartContext } from '../contexts/cart.js'
-import { CartItem } from '../model/cartItem.js'
+import { CartContext } from '../contexts/cart'
+import { CartItem } from '../model/cartItem'
+import { Order } from '../model/order'
 import { Link } from 'react-router-dom';
 import Alert from './Alert';
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { saveOrder, updateItem } from '../firebase/firebase.js'
 
 export default function Checkout() {
     const { cartItems, clearCart, getCartTotal } = useContext(CartContext)
+    const [orderId, setOrderId] = useState('')
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [verifyEmail, setVerifyEmail] = useState('')
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.FormEvent) => {
+        const handleSaveOrder = async (order: Order) => {
+            try
+            {
+                let docRef = await saveOrder(order);
+                setOrderId(docRef.id)
+
+                order.cartItems.forEach(async (cartItem: CartItem) => {
+                    cartItem.item.stock -= cartItem.quantity
+                    if (cartItem.item.stock < 0) {
+                        cartItem.item.stock = 0
+                    }
+                    await updateItem(cartItem.item)
+                })
+            } catch (error) {
+                console.error('Error saving order', error)
+            }
+        };
+
         e.preventDefault()
         if (email !== verifyEmail) {
             notifyEmailsDoNotMatch()
             return
         }
-        const order = {
+
+        const order : Order = {
             name,
             surname,
             phone,
             email,
             cartItems,
-            total: getCartTotal()
+            total: getCartTotal(),
+            date: new Date(),
+            status: 'generated'
         }
-        console.log(order)
+
+        handleSaveOrder(order);
+
         clearCart()
+        clearForm()
+    }
+
+    const clearForm = () => {
+        setName('')
+        setSurname('')
+        setPhone('')
+        setEmail('')
+        setVerifyEmail('')
     }
 
     const  handleNameChange = (event : React.ChangeEvent<HTMLInputElement>) => {
@@ -60,11 +95,10 @@ export default function Checkout() {
           backgroundColor: '#000',
           color: '#fff'
         }
-      })
+    })
     
     return (
         <>
-        <ToastContainer />
         <div>
             <h1>Checkout</h1>
         </div>
@@ -107,34 +141,39 @@ export default function Checkout() {
                 </form>
             </div>
             <div>
-                <h1 className="text-2xl font-bold">Cart ${getCartTotal()}</h1>
-                <div className="overflow-x-auto">
-                <table className="table table-zebra text-xl">
-                    <tbody>
-                    <tr>
-                        {
-                        cartItems.length === 0 ? (
-                            <td><Alert message='Cart is empty'/></td>
-                        ) : (
-                            cartItems.map((cartItem : CartItem) => (
-                            <td key={cartItem.id}>
-                            <div className="card lg:card-side bg-base-100 shadow-xl p-1">
-                                <figure><img src={cartItem.item.image} alt="item image"/></figure>
-                                <div className="card-body">
-                                    <div>
-                                        <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
-                                            <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
-                                            <p>{cartItem.item.description}</p>
-                                            <p>Quantity: {cartItem.quantity}</p>
-                                        </Link>
+                <div>
+                    <h1 className="text-2xl font-bold">Cart ${getCartTotal()}</h1>
+                    <div className="overflow-x-auto">
+                    <table className="table table-zebra text-xl">
+                        <tbody>
+                        <tr>
+                            {
+                            cartItems.length === 0 ? (
+                                <td><Alert message='Cart is empty'/></td>
+                            ) : (
+                                cartItems.map((cartItem : CartItem) => (
+                                <td key={cartItem.id}>
+                                <div className="card lg:card-side bg-base-100 shadow-xl p-1">
+                                    <figure><img src={cartItem.item.image} alt="item image"/></figure>
+                                    <div className="card-body">
+                                        <div>
+                                            <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
+                                                <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
+                                                <p>{cartItem.item.description}</p>
+                                                <p>Quantity: {cartItem.quantity}</p>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            </td>
-                        )))}
-                    </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            )))}
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div>
+                    {orderId && <Alert message={`Order saved with id: ${orderId}`}/>}
                 </div>
             </div>
         </div>

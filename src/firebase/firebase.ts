@@ -1,8 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, getDocs, collection, query, where} from "firebase/firestore";
+import { getFirestore, setDoc } from "firebase/firestore";
+import { doc, addDoc, getDoc, getDocs, collection, query, where} from "firebase/firestore";
 import { Item } from "../model/item";
+import { Order } from "../model/order";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { Order } from "../model/order";
@@ -22,6 +23,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+
+export async function saveOrder(order: Order) {
+    return addDoc(collection(db, "orders"), order);
+}
+
+export async function updateItem(item: Item) {
+    await setDoc(doc(db, "items", item.id), item, {merge: true});
+}
 
 export async function getItems(category: string) {
     if (category !== 'all') {

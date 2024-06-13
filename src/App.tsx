@@ -7,6 +7,8 @@ import CartView from "./components/CartView";
 import Categories from "./components/Categories";
 import Checkout from "./components/Checkout";
 import { CartProvider } from './contexts/cart'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   
@@ -22,6 +24,7 @@ function App() {
           </aside>
           
           <main>
+            <ToastContainer />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/categories/:category" element={<Home />} />

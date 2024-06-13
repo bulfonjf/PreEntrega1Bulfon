@@ -36,18 +36,19 @@ export default function ItemListContainer({greeting}: Props) {
       <div className="overflow-x-auto">
         <table className="table table-zebra text-xl">
           <tbody>
-            <tr>
+            
               {
                 items.length === 0 ? (
-                  <td><Alert message='Items not found'/></td>
+                  <tr><td><Alert message='Items not found'/></td></tr>
                 ) : (
                 items.map((item) => (
-                  <td key={item.id}>
-                    <ItemList key={item.id} item={item} />
-                  </td>
+                  <tr key={item.id}>
+                    <td>
+                      <ItemList key={item.id} item={item} />
+                    </td>
+                  </tr>
                 ))
               )}
-            </tr>
           </tbody>
         </table>
       </div>

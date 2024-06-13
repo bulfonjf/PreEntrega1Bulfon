@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { CartContext } from '../contexts/cart.js'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Item } from '../model/item.js'
 import { CartItem } from '../model/cartItem.js'
@@ -46,7 +46,6 @@ export default function Cart () {
 
   return (
     <>
-    <ToastContainer />
     <h1 className="text-2xl font-bold">Cart</h1>
     <div className="overflow-x-auto">
       <table className="table table-zebra text-xl">
