@@ -33,8 +33,10 @@ export default function ItemDetailContainer() {
     return (
         <div>
           {isLoading ? ( 
-            <div className="container flex justify-center items-center">
-              <ReactLoading type={'spin'} color={'black'} /> 
+            <div className="container flex flex-col gap-3 justify-center items-center">
+              <ReactLoading type={'spin'} color={'black'} />
+              <div className="skeleton w-full h-32 bg-slate-200" >
+              </div>
             </div>
           ) : (
             itemId || item.id ? (

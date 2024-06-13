@@ -19,7 +19,7 @@ function App() {
         <div className="grid-container bg-slate-100">
           <NavBar />
           
-          <aside>
+          <aside className="pr-5">
             <Categories />
           </aside>
           

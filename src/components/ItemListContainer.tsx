@@ -48,7 +48,6 @@ export default function ItemListContainer({greeting}: Props) {
         }
         <table className="table table-zebra text-xl">
           <tbody>
-            
               {
                 items.length === 0 && !isLoading? (
                   <tr><td><Alert message='Items not found'/></td></tr>
