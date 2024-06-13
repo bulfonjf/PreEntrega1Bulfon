@@ -9,7 +9,7 @@ interface CartContextProps {
     removeFromCart : (item : Item) => void,
     clearCart : () => void,
     getCartTotal : () => number
-  }
+}
 
 
 export const CartContext = createContext<CartContextProps>({
@@ -25,7 +25,7 @@ export const CartProvider = ({children} : any) => {
     const [cartItems, setCartItems] = useState<CartItem[]>(localStorage.getItem('cartItems') ? JSON.parse(localStorageCartItem) : [])
 
     const addToCart = (item : Item) => {
-        if(!item || item.stock <= 1) {
+        if(!item || item.stock <= 0) {
             return;
         }
 

@@ -146,28 +146,28 @@ export default function Checkout() {
                     <div className="overflow-x-auto">
                     <table className="table table-zebra text-xl">
                         <tbody>
-                        <tr>
                             {
                             cartItems.length === 0 ? (
-                                <td><Alert message='Cart is empty'/></td>
+                                <tr><td><Alert message='Cart is empty'/></td></tr>
                             ) : (
                                 cartItems.map((cartItem : CartItem) => (
-                                <td key={cartItem.id}>
-                                <div className="card lg:card-side bg-base-100 shadow-xl p-1">
-                                    <figure><img src={cartItem.item.image} alt="item image"/></figure>
-                                    <div className="card-body">
-                                        <div>
-                                            <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
-                                                <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
-                                                <p>{cartItem.item.description}</p>
-                                                <p>Quantity: {cartItem.quantity}</p>
-                                            </Link>
+                                <tr key={cartItem.id}>
+                                    <td>
+                                    <div className="card lg:card-side bg-base-100 shadow-xl p-1">
+                                        <figure><img src={cartItem.item.image} alt="item image"/></figure>
+                                        <div className="card-body">
+                                            <div>
+                                                <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
+                                                    <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
+                                                    <p>{cartItem.item.description}</p>
+                                                    <p>Quantity: {cartItem.quantity}</p>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                </td>
+                                    </td>
+                                </tr>
                             )))}
-                        </tr>
                         </tbody>
                     </table>
                     </div>

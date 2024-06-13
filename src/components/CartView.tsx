@@ -50,52 +50,52 @@ export default function Cart () {
     <div className="overflow-x-auto">
       <table className="table table-zebra text-xl">
         <tbody>
-          <tr>
             {
               cartItems.length === 0 ? (
                 <td><Alert message='Cart is empty'/></td>
               ) : (
                 cartItems.map((cartItem : CartItem) => (
-                <td key={cartItem.id}>
-                  <div className="card lg:card-side bg-base-100 shadow-xl p-1">
-                    <figure><img src={cartItem.item.image} alt="item image"/></figure>
-                    <div className="card-body">
-                      <div>
-                        <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
-                          <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
-                          <p>{cartItem.item.description}</p>
-                        </Link>
-                      </div>
-                      <div className="card-actions justify-start">
-                        <button
-                        className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                        onClick={() => {
-                          addToCart(cartItem.item)
-                        }}
-                        >
-                          +
-                        </button>
-                        <p style={{ flexGrow: '0' }}>{cartItem.quantity}</p>
-                        <button
+                <tr key={cartItem.id}>
+                  <td>
+                    <div className="card lg:card-side bg-base-100 shadow-xl p-1">
+                      <figure><img src={cartItem.item.image} alt="item image"/></figure>
+                      <div className="card-body">
+                        <div>
+                          <Link key={cartItem.id} to={`/item/${cartItem.item.id}`}>
+                            <h2 className="card-title">{cartItem.item.title} ${cartItem.item.price}</h2>
+                            <p>{cartItem.item.description}</p>
+                          </Link>
+                        </div>
+                        <div className="card-actions justify-start">
+                          <button
                           className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
                           onClick={() => {
-                            const cartItemToRemove : CartItem | undefined = cartItems.find((ci : CartItem) => ci.id === cartItem.id);
-                            if (cartItemToRemove?.quantity === 1) {
-                              handleRemoveFromCart(cartItemToRemove.item);
-                            } else {
-                              removeFromCart(cartItemToRemove ? cartItemToRemove.item : {} as Item);
-                            }
+                            addToCart(cartItem.item)
                           }}
-                        >
-                        -
-                      </button>
+                          >
+                            +
+                          </button>
+                          <p style={{ flexGrow: '0' }}>{cartItem.quantity}</p>
+                          <button
+                            className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                            onClick={() => {
+                              const cartItemToRemove : CartItem | undefined = cartItems.find((ci : CartItem) => ci.id === cartItem.id);
+                              if (cartItemToRemove?.quantity === 1) {
+                                handleRemoveFromCart(cartItemToRemove.item);
+                              } else {
+                                removeFromCart(cartItemToRemove ? cartItemToRemove.item : {} as Item);
+                              }
+                            }}
+                          >
+                          -
+                        </button>
+                        </div>
                       </div>
-                    </div>
-                </div>
-                </td>
+                  </div>
+                  </td>
+                </tr>
               ))
             )}
-          </tr>
         </tbody>
       </table>
     </div>
