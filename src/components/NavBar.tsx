@@ -4,7 +4,7 @@ export default function NavBar() {
   return (
     <nav className="bg-slate-400 p-4 flex items-center justify-between">
       <div className="flex-none">
-        <a className="btn btn-ghost text-xl">Wood market</a>
+        <a className="btn btn-ghost text-xl">Tools market</a>
       </div>
       <div className="flex-none">
         <CartWidget count={7} />

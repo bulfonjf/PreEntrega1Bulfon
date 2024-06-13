@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import CartView from "./components/CartView";
 import Categories from "./components/Categories";
+import Checkout from "./components/Checkout";
 import { CartProvider } from './contexts/cart'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
               <Route path="/categories/:category" element={<Home />} />
               <Route path="/cart" element={<CartView />} />
               <Route path="/item/:id" element={<ItemDetailContainer />} />
+              <Route path="/checkout" element={<Checkout />} />
             </Routes>
           </main>
           

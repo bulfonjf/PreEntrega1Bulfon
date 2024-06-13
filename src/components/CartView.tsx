@@ -11,9 +11,6 @@ export default function Cart () {
 
   const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } = useContext(CartContext)
 
-  console.log('CartItems');
-  console.log(cartItems);
-
   const notifyRemovedFromCart = (item : Item) => toast.error(`${item.title} removed from cart!`, {
     position: 'top-center',
     autoClose: 2000,
@@ -61,7 +58,7 @@ export default function Cart () {
               ) : (
                 cartItems.map((cartItem : CartItem) => (
                 <td key={cartItem.id}>
-                  <div className="card lg:card-side bg-base-100 shadow-xl">
+                  <div className="card lg:card-side bg-base-100 shadow-xl p-1">
                     <figure><img src={cartItem.item.image} alt="item image"/></figure>
                     <div className="card-body">
                       <div>
@@ -103,17 +100,22 @@ export default function Cart () {
         </tbody>
       </table>
     </div>
-    <div className="flex flex-col justify-between items-center">
+    <div className="flex flex-col justify-between items-center gap-5">
       <h1 className="text-lg font-bold">Total: ${getCartTotal()}</h1>
-      <button
-        className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-        onClick={() => {
-          clearCart()
-          notifyCartCleared()
-        }}
-      >
-        Clear cart
-      </button>
+      <div className="flex flex-row justify-between items-center gap-5">
+        <Link to="/checkout" className='px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700'>
+          Buy!
+        </Link>
+        <button
+          className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+          onClick={() => {
+            clearCart()
+            notifyCartCleared()
+          }}
+        >
+          Clear cart
+        </button>
+      </div>
     </div>
     </>
   )
