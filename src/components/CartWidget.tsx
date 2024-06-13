@@ -24,7 +24,7 @@ export default function CartWidget() {
             />
           </svg>
           <span className="badge badge-sm indicator-item badge-secondary bg-secondary-muted">
-          { cartItems.length }
+          { cartItems.reduce((acc, item) => acc + item.quantity, 0)}
           </span>
         </Link>
       </div>
