@@ -21,6 +21,11 @@ export default function Checkout() {
         const handleSaveOrder = async (order: Order) => {
             try
             {
+                if (order.cartItems.length === 0) {
+                    notifyCartIsEmpty()
+                    return
+                }
+
                 let docRef = await saveOrder(order);
                 setOrderId(docRef.id)
 
@@ -84,6 +89,20 @@ export default function Checkout() {
     };
 
     const notifyEmailsDoNotMatch = () => toast.error(`Emails do not match`, {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'colored',
+        style: {
+          backgroundColor: '#000',
+          color: '#fff'
+        }
+    })
+
+    const notifyCartIsEmpty = () => toast.error(`Cart is empty, no order was generated`, {
         position: 'top-center',
         autoClose: 2000,
         hideProgressBar: true,
