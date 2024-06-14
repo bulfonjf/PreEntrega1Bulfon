@@ -4,9 +4,6 @@ import { getFirestore, setDoc } from "firebase/firestore";
 import { doc, addDoc, getDoc, getDocs, collection, query, where} from "firebase/firestore";
 import { Item } from "../model/item";
 import { Order } from "../model/order";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-import { Order } from "../model/order";
 
 const env = import.meta.env;
 
