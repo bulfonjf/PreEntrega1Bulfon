@@ -57,7 +57,7 @@ export default function Cart () {
                 cartItems.map((cartItem : CartItem) => (
                 <tr key={cartItem.id}>
                   <td>
-                    <div className="card lg:card-side bg-base-100 shadow-xl p-1">
+                    <div className="card lg:card-side bg-base-100 shadow-xl p-1" style={{display: 'grid', gridGap: '1rem', gridTemplateColumns: '1fr 5fr'}}>
                       <figure><img src={cartItem.item.image} alt="item image"/></figure>
                       <div className="card-body">
                         <div>
