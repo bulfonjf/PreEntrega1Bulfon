@@ -24,6 +24,20 @@ export default function ItemList({ item }: Props) {
         }
     })
 
+    const notifyItemWithoutStock= () => toast.error(`Item is out of stock`, {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'colored',
+        style: {
+          backgroundColor: '#000',
+          color: '#fff'
+        }
+    })
+
 
     const { addToCart } = useContext(CartContext)
     
@@ -41,7 +55,11 @@ export default function ItemList({ item }: Props) {
                     className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
                     onClick={() => {
                     addToCart(item)
-                    notifyItemAddedToCart()
+                    if(item.stock > 0) {
+                        notifyItemAddedToCart()
+                    } else {
+                        notifyItemWithoutStock()
+                    }
                     }}
                     >
                     Add to Cart
