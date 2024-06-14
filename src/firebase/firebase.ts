@@ -30,7 +30,7 @@ export async function updateItem(item: Item) {
 }
 
 export async function getItems(category: string) {
-    if (category !== 'all') {
+    if (category.toLowerCase() !== 'all') {
         return getItemsByCategory(category);
     } else {
         return getAllItems();

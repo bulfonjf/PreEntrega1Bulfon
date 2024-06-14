@@ -12,6 +12,7 @@ export default function Categories() {
 
     return (
         <ul className="menu bg-base-200 w-56 rounded-box">
+            <li key='all'><Link to={`/categories/all`}>All</Link></li>
             {categories.map((category) => (
                 <li key={category}>
                     <Link to={`/categories/${category}`}>{category}</Link>
